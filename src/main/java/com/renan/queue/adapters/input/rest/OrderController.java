@@ -2,7 +2,10 @@ package com.renan.queue.adapters.input.rest;
 
 import com.renan.queue.adapters.input.dto.OrderRequest;
 import com.renan.queue.adapters.output.rabbitmq.OrderProducer;
+import com.renan.queue.application.ports.input.CreateOrderInputPort;
 import com.renan.queue.application.usecases.CreateOrderUseCase;
+import com.renan.queue.domain.Order;
+import com.renan.queue.domain.enums.PaymentType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +16,13 @@ public class OrderController {
 
     private final OrderProducer orderProducer;
 
-    private final CreateOrderUseCase createOrderUseCase;
+    private final CreateOrderInputPort createOrderInputPort;
 
     public OrderController(OrderProducer orderProducer,
-                           CreateOrderUseCase createOrderUseCase
+                           CreateOrderInputPort createOrderInputPort
                            ) {
         this.orderProducer = orderProducer;
-        this.createOrderUseCase = createOrderUseCase;
+        this.createOrderInputPort = createOrderInputPort;
     }
 
     @GetMapping("/order")
@@ -28,8 +31,15 @@ public class OrderController {
         return "Order sent";
     }
 
-    @PostMapping("order")
+    @PostMapping("/order")
     public void sendOrderClient(@RequestBody OrderRequest orderRequest){
-        createOrderUseCase.createOrder(orderRequest);
+
+        Order order = Order.builder()
+                .id(orderRequest.getCustomerId())
+                .amount(orderRequest.getAmount())
+                .paymentType(PaymentType.valueOf(orderRequest.getPaymentType()))
+                .build();
+
+        createOrderInputPort.createOrder(order);
     }
 }

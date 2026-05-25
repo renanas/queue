@@ -1,21 +1,9 @@
 package com.renan.queue.application.ports.input;
 
-import com.renan.queue.adapters.input.dto.OrderRequest;
-import com.renan.queue.application.ports.interfaces.OrderRepository;
-import com.renan.queue.application.usecases.CreateOrderUseCase;
 import com.renan.queue.domain.Order;
 
-public class CreateOrderInputPort implements CreateOrderUseCase {
+public interface CreateOrderInputPort {
 
-    private final OrderRepository orderRepository;
+    void createOrder(Order order);
 
-    private CreateOrderInputPort(OrderRepository orderRepository){
-        this.orderRepository = orderRepository;
-    }
-
-    @Override
-    public void createOrder(OrderRequest orderRequest) {
-        Order order = new Order();
-        orderRepository.save(order);
-    }
 }
