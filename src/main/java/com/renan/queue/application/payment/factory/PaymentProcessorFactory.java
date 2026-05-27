@@ -9,7 +9,7 @@ import com.renan.queue.domain.enums.PaymentType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PaymentProcessorFactory {
+public class PaymentProcessorFactory implements PaymentProcessorResolver{
 
     private final CreditCardPaymentProcessor creditCardProcessor;
     private final PixPaymentProcessor pixProcessor;
@@ -21,6 +21,7 @@ public class PaymentProcessorFactory {
         this.boletoProcessor = boletoProcessor;
     }
 
+    @Override
     public PaymentProcessor getProcessor(
             PaymentType paymentType
     ) {

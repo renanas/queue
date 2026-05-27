@@ -2,6 +2,7 @@ package com.renan.queue.application.usecases;
 
 import com.renan.queue.adapters.input.dto.OrderRequest;
 import com.renan.queue.application.payment.factory.PaymentProcessorFactory;
+import com.renan.queue.application.payment.factory.PaymentProcessorResolver;
 import com.renan.queue.application.payment.processor.PaymentProcessor;
 import com.renan.queue.application.ports.input.CreateOrderInputPort;
 import com.renan.queue.application.ports.output.OrderRepository;
@@ -15,21 +16,21 @@ public class CreateOrderUseCase
 
     private final OrderRepository orderRepository;
 
-    private final PaymentProcessorFactory paymentProcessorFactory;
+    private final PaymentProcessorResolver paymentProcessorResolver;
 
     public CreateOrderUseCase(
             OrderRepository orderRepository,
-            PaymentProcessorFactory paymentProcessorFactory
+            PaymentProcessorResolver paymentProcessorResolver
 
     ){
         this.orderRepository = orderRepository;
-        this.paymentProcessorFactory = paymentProcessorFactory;
+        this.paymentProcessorResolver = paymentProcessorResolver;
     }
 
     @Override
     public void createOrder(Order order){
 
-        paymentProcessorFactory
+        paymentProcessorResolver
                 .getProcessor(order.getPaymentType())
                 .process(order);
 
