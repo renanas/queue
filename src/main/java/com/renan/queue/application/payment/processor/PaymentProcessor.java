@@ -1,4 +1,4 @@
-package com.renan.queue.application.payment;
+package com.renan.queue.application.payment.processor;
 
 import com.renan.queue.domain.Order;
 
