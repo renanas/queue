@@ -34,6 +34,11 @@ public class CreateOrderUseCase
                 .getProcessor(order.getPaymentType())
                 .process(order);
 
+        // TODO: Criar a conxao com o banco
+
         orderRepository.save(order);
+
+
+        //TODO: DEPOIS DE SALVAR PRECISO MANDAR UMA MENSAGEM PARA A FILA DE ORDER
     }
 }
